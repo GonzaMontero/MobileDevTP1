@@ -2,140 +2,206 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControllerTutorial : MonoBehaviour {
-    bool tutorialTerminado = false;
-    int faseTutorial = 0;
+public class ControllerTutorial : MonoBehaviour
+{
+    bool finishedTutorial = false;
+    int tutorialPhase = 0;
     bool moving = false;
-    [SerializeField] Vector3[] pos;
-    [SerializeField] GameObject bolsa;
+
+    [SerializeField] Vector3[] positions;
+    [SerializeField] GameObject bag;
     [SerializeField] Sprite[] images;
-    [SerializeField] SpriteRenderer image;
-    enum Teclas {
+    [SerializeField] SpriteRenderer tutorialScreen;
+
+    enum PlayerKeys
+    {
         ASDW,
-        FLECHAS
+        ARROWS
     }
 
-    [SerializeField] Teclas t;
+    [SerializeField] PlayerKeys t;
 
-    [SerializeField] GameObject[] botones;
+    [SerializeField] GameObject[] buttons;
 
-    private void Start() {
-        bolsa.gameObject.SetActive(false);
+    private void Start()
+    {
+        bag.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update() {
-        if (!tutorialTerminado)
-            switch (t) {
-                case Teclas.ASDW:
-                    if (!moving) {
-                        if (faseTutorial == 0) {
-                            if (Input.GetKeyDown(KeyCode.W)) {
-                                image.sprite = images[0];
-                                bolsa.gameObject.SetActive(true);
-                                faseTutorial = 1;
-                            }
-                        }
-                        else if (faseTutorial == 1) {
-                            if (Input.GetKeyDown(KeyCode.A)) {
-                                image.sprite = images[1];
-                                faseTutorial = 2;
-                                StartCoroutine(Move());
-                            }
-                        }
-                        else if (faseTutorial == 2) {
-                            if (Input.GetKeyDown(KeyCode.S)) {
-                                image.sprite = images[2];
-                                faseTutorial = 3;
-                            }
-                        }
-                        else if (faseTutorial == 3) {
-                            if (Input.GetKeyDown(KeyCode.D)) {
-                                StartCoroutine(Move());
-                                image.sprite = images[3];
+    void Update()
+    {
+        if (!finishedTutorial)
+            switch (t)
+            {
+                case PlayerKeys.ASDW:
+                    if (!moving)
+                    {
+                        if (Input.anyKeyDown)
+                        {
+                            //We check all keys and pass the key and corresponding sprite to the handler
+                            foreach (KeyCode keyPressed in System.Enum.GetValues(typeof(KeyCode))) 
+                            {
+                                if (Input.GetKey(keyPressed))
+                                {
+                                    switch (tutorialPhase)
+                                    {
+                                        case 0:
+                                            HandleKey(keyPressed, images[0]);
+                                            break;
+                                        case 1:
+                                            HandleKey(keyPressed, images[1]);
+                                            break;
+                                        case 2:
+                                            HandleKey(keyPressed, images[3]);
+                                            break;
+                                        case 3:
+                                            HandleKey(keyPressed, images[4]);
+                                            break;
+                                    }
+                                }
                             }
                         }
                     }
-                    break;
-                case Teclas.FLECHAS:
-                    if (!moving) {
-                        if (faseTutorial == 0) {
-                            if (Input.GetKeyDown(KeyCode.UpArrow)) {
-                                image.sprite = images[0];
-                                bolsa.gameObject.SetActive(true);
-                                faseTutorial = 1;
-                            }
-                        }
-                        else if (faseTutorial == 1) {
-                            if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-                                image.sprite = images[1];
-                                faseTutorial = 2;
-                                StartCoroutine(Move());
-                            }
-                        }
-                        else if (faseTutorial == 2) {
-                            if (Input.GetKeyDown(KeyCode.DownArrow)) {
-                                image.sprite = images[2];
-                                faseTutorial = 3;
-                            }
-                        }
-                        else if (faseTutorial == 3) {
-                            if (Input.GetKeyDown(KeyCode.RightArrow)) {
-                                StartCoroutine(Move());
-                                image.sprite = images[3];
+                        break;
+                case PlayerKeys.ARROWS:
+                    if (!moving)
+                    {
+                        if (Input.anyKeyDown)
+                        {
+                            foreach (KeyCode keyPressed in System.Enum.GetValues(typeof(KeyCode)))
+                            {
+                                if (Input.GetKey(keyPressed))
+                                {
+                                    switch (tutorialPhase)
+                                    {
+                                        case 0:
+                                            HandleKey(keyPressed, images[0]);
+                                            break;
+                                        case 1:
+                                            HandleKey(keyPressed, images[1]);
+                                            break;
+                                        case 2:
+                                            HandleKey(keyPressed, images[3]);
+                                            break;
+                                        case 3:
+                                            HandleKey(keyPressed, images[4]);
+                                            break;
+                                    }
+                                }
                             }
                         }
                     }
                     break;
             }
     }
-    bool boton0tocado;
-    bool boton1tocado;
-    bool boton2tocado;
-    bool boton3tocado;
-    public void TocadoBoton(int b) {
-        if(b == 0 && !boton0tocado) {
-            image.sprite = images[0];
-            bolsa.gameObject.SetActive(true);
-            faseTutorial = 1;
-            boton0tocado = true;
-            botones[1].gameObject.SetActive(true);
+
+    void HandleKey(KeyCode k, Sprite spr)
+    {
+        switch (k)
+        {
+            case KeyCode.W:
+            case KeyCode.UpArrow:
+                if (tutorialPhase == 0)
+                {
+                    bag.gameObject.SetActive(true);
+                    tutorialPhase = 1;
+                }
+                break;
+
+            case KeyCode.A:
+            case KeyCode.LeftArrow:
+                if (tutorialPhase == 1)
+                {
+                    tutorialPhase = 2;
+                    StartCoroutine(Move());
+                }
+                break;
+
+            case KeyCode.S:
+            case KeyCode.DownArrow:
+                if (tutorialPhase == 2)
+                {
+                    tutorialPhase = 3;
+                    StartCoroutine(Move());
+                }
+                break;
+
+            case KeyCode.D:
+            case KeyCode.RightArrow:
+                if (tutorialPhase == 3)
+                {
+                    StartCoroutine(Move());
+                }
+                break;
+            default:
+                return;
         }
-        else if (b == 1 && !boton1tocado) {
-            image.sprite = images[1];
-            faseTutorial = 2;
+        tutorialScreen.sprite = spr;
+    }
+
+
+    bool button0Pressed;
+    bool button1Pressed;
+    bool button2Pressed;
+    bool button3Pressed;
+
+    public void ButtonPressed(int b)
+    {
+        if (b == 0 && !button0Pressed)
+        {
+            ButtonHandler(images[0], buttons[1].gameObject);
+
+            bag.gameObject.SetActive(true);
+            tutorialPhase = 1;
+            button0Pressed = true;
+        }
+        else if (b == 1 && !button1Pressed)
+        {
+            ButtonHandler(images[1], buttons[2].gameObject);
+
+            tutorialPhase = 2;
             StartCoroutine(Move());
-            boton1tocado = true;
-            botones[2].gameObject.SetActive(true);
+            button1Pressed = true;
         }
-        else if (b == 2 && !boton2tocado) {
-            image.sprite = images[2];
-            faseTutorial = 3;
-            boton2tocado = true;
-            botones[3].gameObject.SetActive(true);
+        else if (b == 2 && !button2Pressed)
+        {
+            ButtonHandler(images[2], buttons[3].gameObject);
+
+            tutorialPhase = 3;
+            button2Pressed = true;
         }
-        else if (b == 3 && !boton3tocado) {
+        else if (b == 3 && !button3Pressed)
+        {
+            //Since this is a special case, we ignore the Handler
             StartCoroutine(Move());
-            image.sprite = images[3];
-            boton3tocado = true;
+            tutorialScreen.sprite = images[3];
+            button3Pressed = true;
         }
     }
 
-    IEnumerator Move() {
+    void ButtonHandler(Sprite spr, GameObject buttonToEnable)
+    {
+        tutorialScreen.sprite = spr;
+        buttonToEnable.SetActive(true);
+    }
+
+    IEnumerator Move()
+    {
         moving = true;
-        while (bolsa.transform.position != pos[faseTutorial]) {
-            bolsa.transform.position = Vector3.MoveTowards(bolsa.transform.position, pos[faseTutorial], 100 * Time.deltaTime);
+        while (bag.transform.position != positions[tutorialPhase])
+        {
+            bag.transform.position = Vector3.MoveTowards(bag.transform.position, positions[tutorialPhase], 100 * Time.deltaTime);
             yield return null;
         }
         moving = false;
 
-        if (faseTutorial == 3)
-            tutorialTerminado = true;
+        if (tutorialPhase == 3)
+            finishedTutorial = true;
         StopCoroutine(Move());
     }
 
-    public bool GetTutorialTerminado() {
-        return tutorialTerminado;
+    public bool GetFinishedTutorial()
+    {
+        return finishedTutorial;
     }
-
 }
