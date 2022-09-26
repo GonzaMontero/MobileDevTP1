@@ -6,7 +6,7 @@ public class TutorialManager : MonoBehaviour {
 
     [SerializeField] ControllerTutorial p1;
     [SerializeField] ControllerTutorial p2;
-    [SerializeField] PantallaDeCarga pc;
+    [SerializeField] LoadScene pc;
     bool cambiandoEscena;
     [SerializeField] GameObject[] cameras;
     [SerializeField] GameObject principalCamera;
@@ -14,16 +14,16 @@ public class TutorialManager : MonoBehaviour {
     [SerializeField] GameObject[] botones;
     [SerializeField] Camera camP1;
     [SerializeField] GameObject Escena2;
-    ManagerGameplay mg;
+    GameplayDataHolder mg;
     void Start() {
         principalCamera.SetActive(false);
-        mg = FindObjectOfType<ManagerGameplay>();
-        pc = FindObjectOfType<PantallaDeCarga>();
+        mg = FindObjectOfType<GameplayDataHolder>();
+        pc = FindObjectOfType<LoadScene>();
         for (int i = 0; i < botones.Length; i++)
             if (botones[i] != null)
                 botones[i].SetActive(false);
 #if UNITY_EDITOR 
-        if (mg.GetCantJugadores() == ManagerGameplay.CantJugadores.Uno) {
+        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.SinglePlayer) {
             camP1.rect = new Rect(0, 0, 1, 1);
             Escena2.SetActive(false);
         }
@@ -42,13 +42,13 @@ public class TutorialManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (mg.GetCantJugadores() == ManagerGameplay.CantJugadores.Dos) {
+        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
             if (p1.GetTutorialTerminado() && p2.GetTutorialTerminado() && !cambiandoEscena) {
                 cambiandoEscena = true;
                 principalCamera.SetActive(true);
                 cameras[0].SetActive(false);
                 cameras[1].SetActive(false);
-                pc.CargarEscena("conduccion9");
+                pc.StartLoadingScene("conduccion9");
             }
         }
         else {
@@ -56,7 +56,7 @@ public class TutorialManager : MonoBehaviour {
                 cambiandoEscena = true;
                 principalCamera.SetActive(true);
                 cameras[0].SetActive(false);
-                pc.CargarEscena("conduccion9");
+                pc.StartLoadingScene("conduccion9");
             }
         }
     }

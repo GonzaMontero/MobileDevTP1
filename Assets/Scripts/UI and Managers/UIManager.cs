@@ -25,14 +25,14 @@ public class UIManager : MonoBehaviour {
     [SerializeField] GameObject[] botones;
     [SerializeField] GameObject[] sticks;
 
-    ManagerGameplay mg;
+    GameplayDataHolder mg;
     public enum Lado {
         Izq,
         Der
     }
 
     private void Start() {
-        mg = FindObjectOfType<ManagerGameplay>();
+        mg = FindObjectOfType<GameplayDataHolder>();
 
         for (int i = 0; i < UIGame.Length; i++)
             UIGame[i].SetActive(true);
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour {
             UIDescarga[i].SetActive(false);
 
 
-        if (mg.GetCantJugadores() == ManagerGameplay.CantJugadores.Dos) {
+        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
             spriteDer.gameObject.SetActive(true);
             plataDerDesc.gameObject.SetActive(true);
             plataDer.gameObject.SetActive(true);

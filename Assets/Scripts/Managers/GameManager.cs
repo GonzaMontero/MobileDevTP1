@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour {
     [SerializeField] GameObject[] objetosApagarNormal;
     [SerializeField] GameObject[] objetosApagarDificil;
 
-    [SerializeField] ManagerGameplay mg;
-    [SerializeField] PantallaDeCarga pantallaCarga;
+    [SerializeField] GameplayDataHolder mg;
+    [SerializeField] LoadScene pantallaCarga;
 
     [SerializeField] GameObject[] p2Objects;
 
@@ -43,22 +43,22 @@ public class GameManager : MonoBehaviour {
         //PosCamionesCarrera[0].x+=100;
         //PosCamionesCarrera[1].x+=100;
         StartCoroutine(Play());
-        pantallaCarga = FindObjectOfType<PantallaDeCarga>();
-        mg = FindObjectOfType<ManagerGameplay>();
+        pantallaCarga = FindObjectOfType<LoadScene>();
+        mg = FindObjectOfType<GameplayDataHolder>();
 
         if (mg != null)
-            switch (mg.GetDificultad()) {
-                case ManagerGameplay.Dificultad.Easy:
+            switch (mg.GetDificultyLevel()) {
+                case GameplayDataHolder.Dificulty.Easy:
                     for (int i = 0; i < objetosApagarFacil.Length; i++)
                         if (objetosApagarFacil[i] != null)
                             objetosApagarFacil[i].SetActive(false);
                     break;
-                case ManagerGameplay.Dificultad.Normal:
+                case GameplayDataHolder.Dificulty.Normal:
                     for (int i = 0; i < objetosApagarNormal.Length; i++)
                         if (objetosApagarNormal[i] != null)
                             objetosApagarNormal[i].SetActive(false);
                     break;
-                case ManagerGameplay.Dificultad.Dificil:
+                case GameplayDataHolder.Dificulty.Hard:
                     for (int i = 0; i < objetosApagarDificil.Length; i++)
                         if (objetosApagarDificil[i] != null)
                             objetosApagarDificil[i].SetActive(false);
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour {
                 p2Objects[i].SetActive(false);
 
 
-        if (mg.GetCantJugadores() == ManagerGameplay.CantJugadores.Dos) {
+        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
             for (int i = 0; i < p2Objects.Length; i++)
                 if (p2Objects[i] != null)
                     p2Objects[i].SetActive(true);
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(TiempoDeJuego);
         FinalizarCarrera();
         if (pantallaCarga != null)
-            pantallaCarga.CargarEscena("PtsFinal");
+            pantallaCarga.StartLoadingScene("PtsFinal");
         StopCoroutine(Play());
         yield return null;
     }
@@ -134,11 +134,11 @@ public class GameManager : MonoBehaviour {
         }
 
         Player1.GetComponent<Frenado>().Frenar();
-        if (mg.GetCantJugadores() == ManagerGameplay.CantJugadores.Dos)
+        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
             Player2.GetComponent<Frenado>().Frenar();
 
         Player1.ContrDesc.FinDelJuego();
-        if (mg.GetCantJugadores() == ManagerGameplay.CantJugadores.Dos)
+        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
             Player2.ContrDesc.FinDelJuego();
     }
 

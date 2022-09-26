@@ -33,11 +33,11 @@ public class MngPts : MonoBehaviour
 	Visualizacion Viz = new Visualizacion();
 
 	//---------------------------------//
-	PantallaDeCarga pantallaCarga;
+	LoadScene pantallaCarga;
 	// Use this for initialization
 	void Start () 
 	{		
-		pantallaCarga = FindObjectOfType<PantallaDeCarga>();
+		pantallaCarga = FindObjectOfType<LoadScene>();
 	}
 
 	// Update is called once per frame
@@ -78,7 +78,7 @@ public class MngPts : MonoBehaviour
 	
 	public void ButtonPressed(string stl) {
 		if (pantallaCarga != null)
-			pantallaCarga.CargarEscena(stl);
+			pantallaCarga.StartLoadingScene(stl);
 	}
 
 }
