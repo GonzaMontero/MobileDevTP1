@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 16}
   - component: {fileID: 22}
   m_Layer: 0
-  m_Name: Fondo
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 23}
   - component: {fileID: 18}
   m_Layer: 0
-  m_Name: EscMng
+  m_Name: Scene Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,12 +388,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69feffa684faca48990d7dffb34e4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textPj1: {fileID: 1924907336}
-  textPj2: {fileID: 1629169838}
-  imagenGanadores:
+  player1Text: {fileID: 1924907336}
+  player2Text: {fileID: 1629169838}
+  winnerImages:
   - {fileID: 96840624}
   - {fileID: 734383181}
-  puntos: {fileID: 0}
+  pointsSaver: {fileID: 0}
 --- !u!108 &19
 Light:
   m_ObjectHideFlags: 0
@@ -552,22 +552,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c84f0b7a24ddc647a4bd1635f59c824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TiempEmpAnims: 2.5
-  DineroPos:
+  timeForAnimStart: 2.5
+  moneyPosition:
   - {x: 18, y: 85}
   - {x: 56.3, y: 85}
-  DineroEsc: {x: 35, y: 18}
-  GS_Dinero: {fileID: 11400000, guid: 18658b36fb1334a42a49c5419c5eba93, type: 2}
-  GanadorPos: {x: 0, y: 0}
-  GanadorEsc: {x: 100, y: 21}
-  Ganadores:
+  moneyScale: {x: 35, y: 18}
+  skinMoney: {fileID: 11400000, guid: 18658b36fb1334a42a49c5419c5eba93, type: 2}
+  winnerPosition: {x: 0, y: 0}
+  winnerScale: {x: 100, y: 21}
+  winnerTex:
   - {fileID: 2800000, guid: c3d86ea90a1cd5449a861d39906d5d9a, type: 3}
   - {fileID: 2800000, guid: 0a3b339c0051ccd4897e8fb9aaf36835, type: 3}
-  GS_Ganador: {fileID: 11400000, guid: 095e25161e48b3f4fb19542efe9d14c1, type: 2}
-  Fondo: {fileID: 5}
-  TiempEspReiniciar: 15
-  TiempParpadeo: 0.3
-  ActivadoAnims: 0
+  skinWinner: {fileID: 11400000, guid: 095e25161e48b3f4fb19542efe9d14c1, type: 2}
+  backgroundGO: {fileID: 5}
+  waitTimeForRestart: 10
+  blinkTime: 0.7
+  animsActive: 0
 --- !u!1 &96840624
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 96840627}
   - component: {fileID: 96840626}
   m_Layer: 5
-  m_Name: Ganador p1
+  m_Name: Player 1 Wins
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -654,7 +654,7 @@ GameObject:
   - component: {fileID: 238144442}
   - component: {fileID: 238144441}
   m_Layer: 0
-  m_Name: Pantalla Carga
+  m_Name: Load Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -669,17 +669,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 238144440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbb0fb5843ce1754ea5ff355740e0ef4, type: 3}
+  m_Script: {fileID: 11500000, guid: 202688eb948170243ad654f158a65ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imagenDeCarga: {fileID: 523171594}
-  objetosADeshabilitar:
-  - {fileID: 5}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  loadImage: {fileID: 1551460315}
+  objectsToDisable:
+  - {fileID: 909776942}
 --- !u!4 &238144442
 Transform:
   m_ObjectHideFlags: 0
@@ -691,7 +686,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 523171595}
+  - {fileID: 1551460316}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -787,7 +782,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Creditos
+          m_StringArgument: Credits
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &331140733
@@ -1027,37 +1022,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &523171594
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 523171595}
-  m_Layer: 0
-  m_Name: Pantalla Carga
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &523171595
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 523171594}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1551460316}
-  m_Father: {fileID: 238144442}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &734383181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,7 +1034,7 @@ GameObject:
   - component: {fileID: 734383184}
   - component: {fileID: 734383183}
   m_Layer: 5
-  m_Name: Ganador p2
+  m_Name: Player 2 Wins
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1265,7 +1229,7 @@ GameObject:
   - component: {fileID: 1106283258}
   - component: {fileID: 1106283257}
   m_Layer: 0
-  m_Name: Controlador Puntos
+  m_Name: Money Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1280,13 +1244,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1106283256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0352e378e142767499809c43af37eca2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dd43e77081f627428cbcba720ece42e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puntosP1: 0
-  puntosP2: 0
-  p1: {fileID: 0}
-  p2: {fileID: 0}
+  player1Points: 0
+  player2Points: 0
+  player1: {fileID: 0}
+  player2: {fileID: 0}
 --- !u!4 &1106283258
 Transform:
   m_ObjectHideFlags: 0
@@ -1446,7 +1410,7 @@ GameObject:
   - component: {fileID: 1551460318}
   - component: {fileID: 1551460317}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Hiding Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1459,11 +1423,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1551460315}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 250, y: 250, z: 0.1}
   m_Children: []
-  m_Father: {fileID: 523171595}
+  m_Father: {fileID: 238144442}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!23 &1551460317
@@ -1593,7 +1557,7 @@ GameObject:
   - component: {fileID: 1629169839}
   - component: {fileID: 1629169838}
   m_Layer: 5
-  m_Name: Plata P2
+  m_Name: Player 2 Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1861,7 +1825,7 @@ GameObject:
   - component: {fileID: 1924907337}
   - component: {fileID: 1924907336}
   m_Layer: 5
-  m_Name: Plata P1
+  m_Name: Player 1 Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
