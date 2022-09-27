@@ -9,58 +9,61 @@ public class Player : MonoBehaviour
 	int activeBagAmount = 0;
 	
 	public enum States{Dropping, Driving, Calibrating, Tutorial}
-	public States currentState = States.Driving;
+	public States currentState = States.Driving;	
 	
-	public bool EnConduccion = true;
-	public bool EnDescarga = false;
-	
-	public ControladorDeDescarga ContrDesc;
-	public ContrCalibracion ContrCalib;
 
-	Visualizacion MiVisualizacion;
+	[Header("Scripts Attached")]
+	public DescentController descentController;
+	public CalibrationController calibrationController;
+	public Frenado slowing;
+	public ControlDireccion dirControl;
+	public Visualizacion myVisualization;
+	public MeshCollider myCollider;
+	public Respawn myRespawn;
+	public Rigidbody myRigidBody;
+	public Collider[] myColliders;
 
-	public enum Lado {
-		Izq,
-		Der
-	}
+	public enum Side { Left, Right }
 
-	public Lado lado;
+	public Side currentSide;
 
-	public delegate void BolsaAgarrada(int lad, int b);
-	public static event BolsaAgarrada AgarradaBolsa;
+	public delegate void BagGrabbed(int side, int b);
+	public static event BagGrabbed OnBagGrabbed;
 
 	public delegate void EntradaDescarga(int l);
-	public static event EntradaDescarga DescargaEntrada;
+	public static event EntradaDescarga OnEnteredUnload;
 
 	public delegate void SalidaDescarga(int l);
-	public static event SalidaDescarga DescargaSalida;
+	public static event SalidaDescarga OnExitedUnload;
 
 
 	public delegate void PlataCambiada(int l, float p);
-	public static event PlataCambiada CambiadaPlata;
+	public static event PlataCambiada MoneySwapped;
 
 	void Start () 
 	{
 		for(int i = 0; i< bags.Length;i++)
 			bags[i] = null;
 		
-		MiVisualizacion = GetComponent<Visualizacion>();
+		myVisualization = GetComponent<Visualizacion>();
 	}
 	
-	public bool AgregarBolsa(Bolsa b)
+	public bool AddBag(Bolsa b)
 	{
 		if(activeBagAmount + 1 <= bags.Length)
 		{
 			bags[activeBagAmount] = b;
 			activeBagAmount++;
+
 			moneyGained += (int)b.Monto;
 			b.Desaparecer();
 
-			if (CambiadaPlata != null)
-				CambiadaPlata((int)lado, moneyGained);
+			if (MoneySwapped != null)
+				MoneySwapped((int)currentSide, moneyGained);
 
-			if (AgarradaBolsa != null)
-				AgarradaBolsa((int)lado, activeBagAmount);
+			if (OnBagGrabbed != null)
+				OnBagGrabbed((int)currentSide, activeBagAmount);
+
 			return true;
 		}
 		else
@@ -69,7 +72,7 @@ public class Player : MonoBehaviour
 		}
 	}
 	
-	public void VaciarInv()
+	public void EmptyInventory()
 	{
 		for(int i = 0; i< bags.Length;i++)
 			bags[i] = null;
@@ -77,7 +80,7 @@ public class Player : MonoBehaviour
 		activeBagAmount = 0;
 	}
 	
-	public bool ConBolasas()
+	public bool HasBags()
 	{
 		for(int i = 0; i< bags.Length;i++)
 		{
@@ -89,55 +92,43 @@ public class Player : MonoBehaviour
 		return false;
 	}
 	
-	public void SetContrDesc(ControladorDeDescarga contr)
+	public void SetDescentController(DescentController contr)
 	{
-		ContrDesc = contr;
+		descentController = contr;
 	}
 	
-	public ControladorDeDescarga GetContr()
+	public DescentController GetDescentController()
 	{
-		return ContrDesc;
+		return descentController;
 	}
 	
-	public void CambioPlata() {
-		if (CambiadaPlata != null)
-			CambiadaPlata((int)lado, moneyGained);
-	}
-
-	public void CambiarACalibracion()
-	{
-		MiVisualizacion.CambiarACalibracion();
-		currentState = Player.States.Calibrating;
+	public void SwapMoney() {
+		if (MoneySwapped != null)
+			MoneySwapped((int)currentSide, moneyGained);
 	}
 	
-	public void CambiarATutorial()
+	public void SwapToDriving()
 	{
-		MiVisualizacion.CambiarATutorial();
-		currentState = Player.States.Tutorial;
-	}
-	
-	public void CambiarAConduccion()
-	{
-		if (DescargaSalida != null)
-			DescargaSalida((int)lado);
-		MiVisualizacion.CambiarAConduccion();
+		if (OnExitedUnload != null)
+			OnExitedUnload((int)currentSide);
+		myVisualization.CambiarAConduccion();
 		currentState = Player.States.Driving;
 
-		if (AgarradaBolsa != null)
-			AgarradaBolsa((int)lado, 0);
-		if (CambiadaPlata != null)
-			CambiadaPlata((int)lado, moneyGained);
+		if (OnBagGrabbed != null)
+			OnBagGrabbed((int)currentSide, 0);
+		if (MoneySwapped != null)
+			MoneySwapped((int)currentSide, moneyGained);
 	}
 	
-	public void CambiarADescarga()
+	public void SwapToUnloading()
 	{
-		if (DescargaEntrada != null)
-			DescargaEntrada((int)lado);
-		MiVisualizacion.CambiarADescarga();
+		if (OnEnteredUnload != null)
+			OnEnteredUnload((int)currentSide);
+		myVisualization.CambiarADescarga();
 		currentState = Player.States.Dropping;
 	}
 	
-	public void SacarBolasa()
+	public void RemoveBags()
 	{
 		for(int i = 0; i < bags.Length; i++)
 		{

@@ -1,16 +1,14 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
-    //public static Player[] Jugadoers;
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance;
 
-    public static GameManager Instancia;
+    public float gameTime = 60;
 
-    public float TiempoDeJuego = 60;
-
-    public enum EstadoJuego { Calibrando, Jugando, Finalizado }
-    public EstadoJuego EstAct = EstadoJuego.Jugando;
+    public enum GameState { Calibrating, Playing, Finished }
+    public GameState CurrentState = GameState.Playing;
 
     public PlayerInfo PlayerInfo1 = null;
     public PlayerInfo PlayerInfo2 = null;
@@ -19,147 +17,140 @@ public class GameManager : MonoBehaviour {
     public Player Player2;
 
 
-    [SerializeField] GameObject[] objetosApagarFacil;
-    [SerializeField] GameObject[] objetosApagarNormal;
-    [SerializeField] GameObject[] objetosApagarDificil;
+    [SerializeField] GameObject[] objectsToDisableEasy;
+    [SerializeField] GameObject[] objectsToDisableNormal;
+    [SerializeField] GameObject[] objectsToDisableHard;
 
-    [SerializeField] GameplayDataHolder mg;
-    [SerializeField] LoadScene pantallaCarga;
+    [SerializeField] GameplayDataHolder gameplayDataHolder;
+    [SerializeField] LoadScene loadingScene;
 
-    [SerializeField] GameObject[] p2Objects;
+    [SerializeField] GameObject[] player2Objects;
 
-    [SerializeField] Camera camp1;
-    [SerializeField] Camera camp1Entrega;
+    [SerializeField] Camera mainPlayer1Camera;
+    [SerializeField] Camera mainDeliveryPlayer1Camera;
 
-    void Awake() {
-        GameManager.Instancia = this;
+    void Awake()
+    {
+        Instance = this;
     }
 
-    void Start() {
-
-        //IniciarCalibracion();
-        EmpezarCarrera();
-        //para testing
-        //PosCamionesCarrera[0].x+=100;
-        //PosCamionesCarrera[1].x+=100;
+    void Start()
+    {
+        StartRace();
+        
         StartCoroutine(Play());
-        pantallaCarga = FindObjectOfType<LoadScene>();
-        mg = FindObjectOfType<GameplayDataHolder>();
 
-        if (mg != null)
-            switch (mg.GetDificultyLevel()) {
+        loadingScene = LoadScene.Instance;
+        gameplayDataHolder = GameplayDataHolder.Instance;
+
+        if (gameplayDataHolder != null)
+
+            switch (gameplayDataHolder.GetDificultyLevel())
+            {
                 case GameplayDataHolder.Dificulty.Easy:
-                    for (int i = 0; i < objetosApagarFacil.Length; i++)
-                        if (objetosApagarFacil[i] != null)
-                            objetosApagarFacil[i].SetActive(false);
+                    GameObjectEnabler(objectsToDisableEasy, false);
                     break;
                 case GameplayDataHolder.Dificulty.Normal:
-                    for (int i = 0; i < objetosApagarNormal.Length; i++)
-                        if (objetosApagarNormal[i] != null)
-                            objetosApagarNormal[i].SetActive(false);
+                    GameObjectEnabler(objectsToDisableNormal, false);
                     break;
                 case GameplayDataHolder.Dificulty.Hard:
-                    for (int i = 0; i < objetosApagarDificil.Length; i++)
-                        if (objetosApagarDificil[i] != null)
-                            objetosApagarDificil[i].SetActive(false);
+                    GameObjectEnabler(objectsToDisableHard, false);
                     break;
             }
 
-        for (int i = 0; i < p2Objects.Length; i++)
-            if (p2Objects[i] != null)
-                p2Objects[i].SetActive(false);
+        GameObjectEnabler(player2Objects, false);
 
-
-        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
-            for (int i = 0; i < p2Objects.Length; i++)
-                if (p2Objects[i] != null)
-                    p2Objects[i].SetActive(true);
+        if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
+        {
+            GameObjectEnabler(player2Objects, true);
         }
-        else {
-            for (int i = 0; i < p2Objects.Length; i++)
-                if (p2Objects[i] != null)
-                    p2Objects[i].SetActive(false);
-
-            camp1.rect = new Rect(0f, 0f, 1f, 1f);
-            camp1Entrega.rect = new Rect(0f, 0f, 1f, 1f);
+        else
+        {
+            mainPlayer1Camera.rect = new Rect(0f, 0f, 1f, 1f);
+            mainDeliveryPlayer1Camera.rect = new Rect(0f, 0f, 1f, 1f);
         }
-
-
-
     }
 
-    IEnumerator Play() {
-        yield return new WaitForSeconds(TiempoDeJuego);
-        FinalizarCarrera();
-        if (pantallaCarga != null)
-            pantallaCarga.StartLoadingScene("PtsFinal");
+    void GameObjectEnabler(GameObject[] listToEnable, bool enabled)
+    {
+        for (int i = 0; i < listToEnable.Length; i++)
+            if (listToEnable[i] != null)
+                listToEnable[i].SetActive(enabled);
+    }
+
+    IEnumerator Play()
+    {
+        yield return new WaitForSeconds(gameTime);
+        FinishRace();
+        if (loadingScene != null)
+            loadingScene.StartLoadingScene("Final Score");
         StopCoroutine(Play());
         yield return null;
     }
 
-    void EmpezarCarrera() {
-        Player1.GetComponent<Frenado>().RestaurarVel();
-        Player1.GetComponent<ControlDireccion>().Habilitado = true;
+    void StartRace()
+    {
+        Player1.slowing.RestaurarVel();
+        Player1.dirControl.Habilitado = true;
 
-        Player2.GetComponent<Frenado>().RestaurarVel();
-        Player2.GetComponent<ControlDireccion>().Habilitado = true;
+        Player2.slowing.RestaurarVel();
+        Player2.dirControl.Habilitado = true;
     }
 
-    void FinalizarCarrera() {
-        EstAct = GameManager.EstadoJuego.Finalizado;
+    void FinishRace()
+    {
+        CurrentState = GameManager.GameState.Finished;
 
-        TiempoDeJuego = 0;
+        gameTime = 0;
 
-        if (Player1.moneyGained > Player2.moneyGained) {
-            //lado que gano
+        if (Player1.moneyGained > Player2.moneyGained)
+        {
             if (PlayerInfo1.LadoAct == Visualizacion.Lado.Der)
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
+                MatchData.WinnerSide = MatchData.Side.Der;
             else
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
+                MatchData.WinnerSide = MatchData.Side.Izq;
 
-            //puntajes
-            DatosPartida.PtsGanador = Player1.moneyGained;
-            DatosPartida.PtsPerdedor = Player2.moneyGained;
+            MatchData.WinnerPoints = Player1.moneyGained;
+            MatchData.LoserPoints = Player2.moneyGained;
         }
-        else {
-            //lado que gano
+        else
+        {
             if (PlayerInfo2.LadoAct == Visualizacion.Lado.Der)
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Der;
+                MatchData.WinnerSide = MatchData.Side.Der;
             else
-                DatosPartida.LadoGanadaor = DatosPartida.Lados.Izq;
+                MatchData.WinnerSide = MatchData.Side.Izq;
 
-            //puntajes
-            DatosPartida.PtsGanador = Player2.moneyGained;
-            DatosPartida.PtsPerdedor = Player1.moneyGained;
+            MatchData.WinnerPoints = Player2.moneyGained;
+            MatchData.LoserPoints = Player1.moneyGained;
         }
 
         Player1.GetComponent<Frenado>().Frenar();
-        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
+        if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
             Player2.GetComponent<Frenado>().Frenar();
 
-        Player1.ContrDesc.FinDelJuego();
-        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
-            Player2.ContrDesc.FinDelJuego();
+        Player1.descentController.GameFinished();
+        if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
+            Player2.descentController.GameFinished();
     }
 
-
     [System.Serializable]
-    public class PlayerInfo {
-        public PlayerInfo(int tipoDeInput, Player pj) {
-            TipoDeInput = tipoDeInput;
-            PJ = pj;
+    public class PlayerInfo
+    {
+        public PlayerInfo(int inputType, Player player)
+        {
+            this.inputType = inputType;
+            this.player = player;
         }
 
-        public bool FinCalibrado = false;
-        public bool FinTuto1 = false;
-        public bool FinTuto2 = false;
+        public bool finishCalibration = false;
+        public bool finishTutorial1 = false;
+        public bool finishTutorial2 = false;
 
         public Visualizacion.Lado LadoAct;
 
-        public int TipoDeInput = -1;
+        public int inputType = -1;
 
-        public Player PJ;
+        public Player player;
     }
-
 }
 

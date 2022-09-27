@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EstantePartida : ManejoPallets
+public class EstantePartida : PalletManager
 {
 	//public Cinta CintaReceptora;//cinta que debe recibir la bolsa
 	public GameObject ManoReceptora;
@@ -9,26 +9,26 @@ public class EstantePartida : ManejoPallets
 	
 	void OnTriggerEnter(Collider other)
 	{
-		ManejoPallets recept = other.GetComponent<ManejoPallets>();
+		PalletManager recept = other.GetComponent<PalletManager>();
 		if(recept != null)
 		{
-			Dar(recept);
+			Give(recept);
 		}
 	}
 	
 	//------------------------------------------------------------//
 	
-	public override void Dar(ManejoPallets receptor)
+	public override void Give(PalletManager receptor)
 	{
-        if (receptor.Recibir(Pallets[0])) {
+        if (receptor.RecievePallet(Pallets[0])) {
             Pallets.RemoveAt(0);
         }
     }
 	
-	public override bool Recibir (Pallet pallet)
+	public override bool RecievePallet (Pallet pallet)
 	{
 		//pallet.CintaReceptora = CintaReceptora.gameObject;
-		pallet.Portador = gameObject;
-		return base.Recibir (pallet);
+		pallet.porter = gameObject;
+		return base.RecievePallet (pallet);
 	}
 }

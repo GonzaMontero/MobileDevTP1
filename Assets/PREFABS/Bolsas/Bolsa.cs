@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bolsa : MonoBehaviour
 {
-	public Pallet.Valores Monto;
+	public Pallet.Values Monto;
 	//public int IdPlayer = 0;
 	public string TagPlayer = "";
 	public Texture2D ImagenInventario;
@@ -19,7 +19,7 @@ public class Bolsa : MonoBehaviour
 	ParticleSystem particles;
 	void Start () 
 	{
-		Monto = Pallet.Valores.Valor2;
+		Monto = Pallet.Values.Value2;
 
 		rend = GetComponent<Renderer>();
 		coll = GetComponent<Collider>();
@@ -56,7 +56,7 @@ public class Bolsa : MonoBehaviour
 			Pj = coll.GetComponent<Player>();
 			//if(IdPlayer == Pj.IdPlayer)
 			//{
-				if(Pj.AgregarBolsa(this))
+				if(Pj.AddBag(this))
 					Desaparecer();
 			//}
 		}

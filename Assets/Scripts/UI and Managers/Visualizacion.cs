@@ -203,7 +203,7 @@ public class Visualizacion : MonoBehaviour {
     }
 
     void SetBonus() {
-        if (Pj.ContrDesc.PEnMov != null) {
+        if (Pj.descentController.PEnMov != null) {
             //el fondo
             GUI.skin = GS_FondoFondoBonusColor; 
 
@@ -220,7 +220,7 @@ public class Visualizacion : MonoBehaviour {
             GUI.skin = GS_FondoBonusColor;
 
             R.width = ColorFondoEsc.x * Screen.width / 100;
-            R.height = (ColorFondoEsc.y * Screen.height / 100) * (Pj.ContrDesc.Bonus / (int)Pallet.Valores.Valor2);
+            R.height = (ColorFondoEsc.y * Screen.height / 100) * (Pj.descentController.Bonus / (int)Pallet.Values.Value2);
             R.x = ColorFondoPos.x * Screen.width / 100;
             R.y = (ColorFondoPos.y * Screen.height / 100) - R.height;
             if (LadoAct == Visualizacion.Lado.Der)
@@ -237,7 +237,7 @@ public class Visualizacion : MonoBehaviour {
             R.y = BonusPos.y * Screen.height / 100;
             if (LadoAct == Visualizacion.Lado.Der)
                 R.x += (Screen.width) / 2;
-            GUI.Box(R, "     $" + Pj.ContrDesc.Bonus.ToString("0"));
+            GUI.Box(R, "     $" + Pj.descentController.Bonus.ToString("0"));
         }
     }
 

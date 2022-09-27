@@ -51,10 +51,10 @@ public class Frenado : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.tag == TagDeposito) {
-            Deposito2 dep = other.GetComponent<Deposito2>();
-            if (dep.Vacio) {
-                if (this.GetComponent<Player>().ConBolasas()) {
-                    dep.Entrar(this.GetComponent<Player>());
+            Deposit dep = other.GetComponent<Deposit>();
+            if (dep.Empty) {
+                if (this.GetComponent<Player>().HasBags()) {
+                    dep.Enter(this.GetComponent<Player>());
                     Destino = other.transform.position;
                     transform.forward = Destino - transform.position;
                     Frenar();

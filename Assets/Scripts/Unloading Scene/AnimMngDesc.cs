@@ -5,7 +5,7 @@ public class AnimMngDesc : MonoBehaviour
 {
 	public string AnimEntrada = "Entrada";
 	public string AnimSalida = "Salida";
-	public ControladorDeDescarga ContrDesc;
+	public DescentController ContrDesc;
 	
 	enum AnimEnCurso{Salida,Entrada,Nada}
 	AnimEnCurso AnimAct = AnimMngDesc.AnimEnCurso.Nada;
@@ -33,7 +33,7 @@ public class AnimMngDesc : MonoBehaviour
 			if(!GetComponent<Animation>().IsPlaying(AnimEntrada))
 			{
 				AnimAct = AnimMngDesc.AnimEnCurso.Nada;
-				ContrDesc.FinAnimEntrada();
+				ContrDesc.AnimationFinished();
 			}
 			
 			break;
@@ -43,7 +43,7 @@ public class AnimMngDesc : MonoBehaviour
 			if(!GetComponent<Animation>().IsPlaying(AnimSalida))
 			{
 				AnimAct = AnimMngDesc.AnimEnCurso.Nada;
-				ContrDesc.FinAnimSalida();
+				ContrDesc.FinishedExitAnimation();
 			}
 			
 			break;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Cinta : ManejoPallets {
+public class Cinta : PalletManager {
     public bool Encendida;//lo que hace la animacion
     bool ConPallet = false;
     public float Velocidad = 1;
@@ -45,17 +45,17 @@ public class Cinta : ManejoPallets {
         //movimiento del pallet
         for (int i = 0; i < Pallets.Count; i++) {
             if (Pallets[i].GetComponent<Renderer>().enabled) {
-                if (!Pallets[i].GetComponent<Pallet>().EnSmoot) {
+                if (!Pallets[i].GetComponent<Pallet>().isSmooth) {
                     Pallets[i].GetComponent<Pallet>().enabled = false;
-                    Pallets[i].TempoEnCinta += Time.deltaTime;
+                    Pallets[i].currentTimeOnConveyor += Time.deltaTime;
 
                     Pallets[i].transform.position += transform.right * Velocidad * Time.deltaTime;
                     Vector3 vAux = Pallets[i].transform.localPosition;
                     vAux.y = 3.61f;//altura especifica
                     Pallets[i].transform.localPosition = vAux;
 
-                    if (Pallets[i].TempoEnCinta >= Pallets[i].TiempEnCinta) {
-                        Pallets[i].TempoEnCinta = 0;
+                    if (Pallets[i].currentTimeOnConveyor >= Pallets[i].timeOnConveyor) {
+                        Pallets[i].currentTimeOnConveyor = 0;
                         ObjAct.gameObject.SetActiveRecursively(false);
                     }
                 }
@@ -64,22 +64,22 @@ public class Cinta : ManejoPallets {
     }
 
     void OnTriggerEnter(Collider other) {
-        ManejoPallets recept = other.GetComponent<ManejoPallets>();
+        PalletManager recept = other.GetComponent<PalletManager>();
         if (recept != null) {
-            Dar(recept);
+            Give(recept);
         }
     }
 
 
     //------------------------------------------------------------//
 
-    public override bool Recibir(Pallet p) {
+    public override bool RecievePallet(Pallet p) {
         Tempo = 0;
-        Controlador.LlegadaPallet(p);
-        p.Portador = this.gameObject;
+        controller.ArrivedToSlider(p);
+        p.porter = this.gameObject;
         ConPallet = true;
         ObjAct = p.transform;
-        base.Recibir(p);
+        base.RecievePallet(p);
         //p.GetComponent<Pallet>().enabled = false;
         Apagar();
 

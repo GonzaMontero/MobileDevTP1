@@ -3,78 +3,65 @@ using System.Collections;
 
 public class Pallet : MonoBehaviour 
 {
-	public Valores Valor;
-	public float Tiempo;
-	public GameObject CintaReceptora = null;
-	public GameObject Portador = null;
-	public float TiempEnCinta = 1.5f;
-	public float TempoEnCinta = 0;
-	
-	public enum Valores {Valor1 = 100000, 
-						 Valor2 = 250000, 
-						 Valor3 = 500000}
-	
-	
-	public float TiempSmoot = 0.3f;
-	float TempoSmoot = 0;
-	public bool EnSmoot = false;
+	public float time;
+	public GameObject reciever = null;
+	public GameObject porter = null;
 
-	ManoRecept manoReceptPortador;
+	public float timeOnConveyor = 1.5f;
+	public float currentTimeOnConveyor = 0;
+	
+	public enum Values {Value1 = 100000, Value2 = 250000, Value3 = 500000}
+	public Values value;
+
+	public float smoothTime = 0.3f;
+	float currSmoothTime = 0;
+	public bool isSmooth = false;
+
+	ReceptionHand receptHand;
 	
 	void Start()
 	{
-		if (Portador != null)
-			manoReceptPortador = Portador.GetComponent<ManoRecept>();
-		Pasaje();
+		if (porter != null)
+			receptHand = porter.GetComponent<ReceptionHand>();
+		Passing();
 	}
 	
 	void LateUpdate () 
 	{
-		if(Portador != null)
+		if(porter != null)
 		{
-			if(EnSmoot)
+			if(isSmooth)
 			{
-				TempoSmoot += Time.deltaTime;
-				if(TempoSmoot >= TiempSmoot)
+				currSmoothTime += Time.deltaTime;
+				if(currSmoothTime >= smoothTime)
 				{
-					EnSmoot = false;
-					TempoSmoot = 0;
+					isSmooth = false;
+					currSmoothTime = 0;
 				}
 				else
 				{
-					if(manoReceptPortador != null)
-						transform.position = Portador.transform.position - Vector3.up * 1.2f;
+					if(receptHand != null)
+						transform.position = porter.transform.position - Vector3.up * 1.2f;
 					else
-						transform.position = Vector3.Lerp(transform.position, Portador.transform.position, Time.deltaTime * 10);
+						transform.position = Vector3.Lerp(transform.position, porter.transform.position, Time.deltaTime * 10);
 				}
 				
 			}
 			else
 			{
-				if(manoReceptPortador != null)
-					transform.position = Portador.transform.position - Vector3.up * 1.2f;
+				if(receptHand != null)
+					transform.position = porter.transform.position - Vector3.up * 1.2f;
 				else
-					transform.position = Portador.transform.position;
+					transform.position = porter.transform.position;
 					
 			}
 		}
 			
 	}
 	
-	//----------------------------------------------//
-	
-	public float GetBonus()
+	public void Passing()
 	{
-		if(Tiempo > 0)
-		{
-			//calculo del bonus
-		}
-		return -1;
-	}
-	
-	public void Pasaje()
-	{
-		EnSmoot = true;
-		TempoSmoot = 0;
+		isSmooth = true;
+		currSmoothTime = 0;
 	}
 }

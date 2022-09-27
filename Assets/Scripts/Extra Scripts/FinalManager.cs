@@ -8,15 +8,15 @@ public class FinalManager : MonoBehaviour {
     [SerializeField] TextMeshProUGUI textPj2;
 
     [SerializeField] GameObject[] imagenGanadores;
-    [SerializeField] GuardarPuntos puntos;
+    [SerializeField] PointsSaver puntos;
     void Start() {
 
-        puntos = FindObjectOfType<GuardarPuntos>();
-        textPj1.text = "$" + puntos.puntosP1;
-        textPj2.text = "$" + puntos.puntosP2;
+        puntos = FindObjectOfType<PointsSaver>();
+        textPj1.text = "$" + puntos.player1Points;
+        textPj2.text = "$" + puntos.player2Points;
 
         Destroy(puntos.gameObject, 0.33f);
-        if (puntos.puntosP1 > puntos.puntosP2) {
+        if (puntos.player1Points > puntos.player2Points) {
             imagenGanadores[0].SetActive(true);
             imagenGanadores[1].SetActive(false);
         }

@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class Estanteria : ManejoPallets
+public class Estanteria : PalletManager
 {	
 	public Cinta CintaReceptora;//cinta que debe recibir la bolsa
-	public Pallet.Valores Valor;
+	public Pallet.Values Valor;
 	PilaPalletMng Contenido;
 	public bool Anim = false;
 	
@@ -53,24 +53,24 @@ public class Estanteria : ManejoPallets
 	
 	void OnTriggerEnter(Collider other)
 	{
-		ManejoPallets recept = other.GetComponent<ManejoPallets>();
+		PalletManager recept = other.GetComponent<PalletManager>();
 		if(recept != null)
 		{
-			Dar(recept);
+			Give(recept);
 		}
 	}
 	
 	//------------------------------------------------------------//
 	
-	public override void Dar(ManejoPallets receptor)
+	public override void Give(PalletManager receptor)
 	{
-        if (Tenencia()) {
-            if (Controlador.GetPalletEnMov() == null) {
-                if (receptor.Recibir(Pallets[0])) {
+        if (HasPallets()) {
+            if (controller.GetMovingPallet() == null) {
+                if (receptor.RecievePallet(Pallets[0])) {
                     //enciende la cinta y el indicador
                     //cambia la textura de cuantos pallet le queda
                     CintaReceptora.Encender();
-                    Controlador.SalidaPallet(Pallets[0]);
+                    controller.LeavePallet(Pallets[0]);
                     Pallets[0].GetComponent<Renderer>().enabled = true;
                     Pallets.RemoveAt(0);
                     Contenido.Sacar();
@@ -81,13 +81,13 @@ public class Estanteria : ManejoPallets
         }
     }
 	
-	public override bool Recibir (Pallet pallet)
+	public override bool RecievePallet (Pallet pallet)
 	{
-		pallet.CintaReceptora = CintaReceptora.gameObject;
-		pallet.Portador = this.gameObject;
+		pallet.reciever = CintaReceptora.gameObject;
+		pallet.porter = this.gameObject;
 		Contenido.Agregar();
 		pallet.GetComponent<Renderer>().enabled = false;
-		return base.Recibir (pallet);
+		return base.RecievePallet (pallet);
 	}
 	
 	public void ApagarAnim()

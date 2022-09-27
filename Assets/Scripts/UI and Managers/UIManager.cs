@@ -73,16 +73,16 @@ public class UIManager : MonoBehaviour {
 
 #endif
 
-        Player.CambiadaPlata += PlataCambio;
-        Player.DescargaSalida += SalidaDescarga;
-        Player.DescargaEntrada += EntradaDescarga;
-        Player.AgarradaBolsa += CambiarSprite;
+        Player.MoneySwapped += PlataCambio;
+        Player.OnExitedUnload += SalidaDescarga;
+        Player.OnEnteredUnload += EntradaDescarga;
+        Player.OnBagGrabbed += CambiarSprite;
     }
     private void OnDestroy() {
-        Player.CambiadaPlata -= PlataCambio;
-        Player.DescargaSalida -= SalidaDescarga;
-        Player.DescargaEntrada -= EntradaDescarga;
-        Player.AgarradaBolsa -= CambiarSprite;
+        Player.MoneySwapped -= PlataCambio;
+        Player.OnExitedUnload -= SalidaDescarga;
+        Player.OnEnteredUnload -= EntradaDescarga;
+        Player.OnBagGrabbed -= CambiarSprite;
     }
 
     void PlataCambio(int l, float p) {

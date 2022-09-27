@@ -14,7 +14,7 @@ public class PantallaCalibTuto : MonoBehaviour
 	
 	public Texture2D ImaReady;
 	
-	public ContrCalibracion ContrCalib;
+	public CalibrationController ContrCalib;
 
 	Renderer rend;
 
