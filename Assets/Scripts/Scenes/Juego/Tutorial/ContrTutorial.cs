@@ -49,14 +49,14 @@ public class ContrTutorial : MonoBehaviour
 	
 	public void Iniciar()
 	{
-		Pj.GetComponent<Frenado>().RestaurarVel();
+		Pj.GetComponent<SlowingManager>().RestoreVelocity();
 		Iniciado = true;
 	}
 	
 	public void Finalizar()
 	{
 		Finalizado = true;
-		Pj.GetComponent<Frenado>().Frenar();
+		Pj.GetComponent<SlowingManager>().Stop();
 		Pj.GetComponent<Rigidbody>().velocity = Vector3.zero;
 		Pj.EmptyInventory();
 	}

@@ -30,7 +30,7 @@ public class MngPts : MonoBehaviour
 	
 	public bool ActivadoAnims = false;
 	
-	Visualizacion Viz = new Visualizacion();
+	Visualizer Viz = new Visualizer();
 
 	//---------------------------------//
 	LoadScene pantallaCarga;

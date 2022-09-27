@@ -8,32 +8,28 @@ public class CarController : MonoBehaviour {
     public List<WheelCollider> steeringWheels = new List<WheelCollider>();
     public float throttleCoefficient = 20000f;
     public float maxTurn = 20f;
-    float giro = 0f;
-    float acel = 1f;
+    float acceleration = 1f;
 
-    public enum Lado {
-        Izq,
-        Der
+    public enum Side {
+        Left,
+        Right
     }
 
-    public Lado lado;
+    public Side currentSide;
 
 	void FixedUpdate () {
         foreach (var wheel in throttleWheels) {
-            wheel.motorTorque = throttleCoefficient * Time.fixedDeltaTime * acel;
+            wheel.motorTorque = throttleCoefficient * Time.fixedDeltaTime * acceleration;
         }
         foreach (var wheel in steeringWheels) {
-            if(lado == Lado.Izq)
+            if(currentSide == Side.Left)
                 wheel.steerAngle = maxTurn * InputManager.Instance.GetAxis("Horizontal1");
-            else if (lado == Lado.Der)
+            else if (currentSide == Side.Right)
                 wheel.steerAngle = maxTurn * InputManager.Instance.GetAxis("Horizontal2");
         }
     }
 
-    public void SetGiro(float giro) {
-        this.giro = giro;
-    }
-    public void SetAcel(float val) {
-        acel = val;
+    public void SetAcceleration(float val) {
+        acceleration = val;
     }
 }

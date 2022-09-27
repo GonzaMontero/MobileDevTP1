@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Deposit : MonoBehaviour 
 {	
-	Player currentPlayer;
+	public Player currentPlayer;
 
 	public bool Empty = true;
 
@@ -29,7 +29,7 @@ public class Deposit : MonoBehaviour
 	public void Drop()
 	{
 		currentPlayer.EmptyInventory();
-		currentPlayer.slowing.RestaurarVel();
+		currentPlayer.slowing.RestoreVelocity();
 		currentPlayer.myRespawn.Respawnear(transform.position,transform.forward);
 		
 		currentPlayer.myRigidBody.useGravity = true;

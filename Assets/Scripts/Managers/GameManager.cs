@@ -32,16 +32,15 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        loadingScene = LoadScene.Instance;
+        gameplayDataHolder = GameplayDataHolder.Instance;
     }
 
     void Start()
     {
         StartRace();
         
-        StartCoroutine(Play());
-
-        loadingScene = LoadScene.Instance;
-        gameplayDataHolder = GameplayDataHolder.Instance;
+        StartCoroutine(Play());       
 
         if (gameplayDataHolder != null)
 
@@ -66,6 +65,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            GameObjectEnabler(player2Objects, false);
             mainPlayer1Camera.rect = new Rect(0f, 0f, 1f, 1f);
             mainDeliveryPlayer1Camera.rect = new Rect(0f, 0f, 1f, 1f);
         }
@@ -90,10 +90,10 @@ public class GameManager : MonoBehaviour
 
     void StartRace()
     {
-        Player1.slowing.RestaurarVel();
+        Player1.slowing.RestoreVelocity();
         Player1.dirControl.Habilitado = true;
 
-        Player2.slowing.RestaurarVel();
+        Player2.slowing.RestoreVelocity();
         Player2.dirControl.Habilitado = true;
     }
 
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
 
         if (Player1.moneyGained > Player2.moneyGained)
         {
-            if (PlayerInfo1.LadoAct == Visualizacion.Lado.Der)
+            if (PlayerInfo1.LadoAct == Visualizer.Side.Right)
                 MatchData.WinnerSide = MatchData.Side.Der;
             else
                 MatchData.WinnerSide = MatchData.Side.Izq;
@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (PlayerInfo2.LadoAct == Visualizacion.Lado.Der)
+            if (PlayerInfo2.LadoAct == Visualizer.Side.Right)
                 MatchData.WinnerSide = MatchData.Side.Der;
             else
                 MatchData.WinnerSide = MatchData.Side.Izq;
@@ -124,9 +124,9 @@ public class GameManager : MonoBehaviour
             MatchData.LoserPoints = Player1.moneyGained;
         }
 
-        Player1.GetComponent<Frenado>().Frenar();
+        Player1.GetComponent<SlowingManager>().Stop();
         if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
-            Player2.GetComponent<Frenado>().Frenar();
+            Player2.GetComponent<SlowingManager>().Stop();
 
         Player1.descentController.GameFinished();
         if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
         public bool finishTutorial1 = false;
         public bool finishTutorial2 = false;
 
-        public Visualizacion.Lado LadoAct;
+        public Visualizer.Side LadoAct;
 
         public int inputType = -1;
 

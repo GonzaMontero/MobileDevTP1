@@ -5,70 +5,70 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
-    [SerializeField] Sprite[] spritesCargaIzq;
-    [SerializeField] Sprite[] spritesCargaDer;
-    [SerializeField] Image spriteIzq;
-    [SerializeField] Image spriteDer;
+    [SerializeField] Sprite[] leftLoadingSprite;
+    [SerializeField] Sprite[] rightLoadingSprite;
+    [SerializeField] Image leftSprite;
+    [SerializeField] Image rightSprite;
 
     [SerializeField] GameObject[] UIGame;
-    [SerializeField] GameObject[] UIDescarga;
+    [SerializeField] GameObject[] UIUnload;
 
-    [SerializeField] TextMeshProUGUI plataIzq;
-    [SerializeField] TextMeshProUGUI plataDer;
+    [SerializeField] TextMeshProUGUI leftMoney;
+    [SerializeField] TextMeshProUGUI rightMoney;
 
-    [SerializeField] TextMeshProUGUI plataIzqDesc;
-    [SerializeField] TextMeshProUGUI plataDerDesc;
+    [SerializeField] TextMeshProUGUI leftMoneyDesc;
+    [SerializeField] TextMeshProUGUI rightMoneyDesc;
 
     [SerializeField] GameObject gameDerCosas;
     [SerializeField] GameObject descDerCosas;
 
-    [SerializeField] GameObject[] botones;
+    [SerializeField] GameObject[] buttons;
     [SerializeField] GameObject[] sticks;
 
-    GameplayDataHolder mg;
-    public enum Lado {
-        Izq,
-        Der
+    GameplayDataHolder gameplayDataHolder;
+    public enum Side {
+        Left,
+        Right
     }
 
     private void Start() {
-        mg = FindObjectOfType<GameplayDataHolder>();
+        gameplayDataHolder = GameplayDataHolder.Instance;
 
         for (int i = 0; i < UIGame.Length; i++)
             UIGame[i].SetActive(true);
-        for (int i = 0; i < UIDescarga.Length; i++)
-            UIDescarga[i].SetActive(false);
+        for (int i = 0; i < UIUnload.Length; i++)
+            UIUnload[i].SetActive(false);
 
 
-        if (mg.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
-            spriteDer.gameObject.SetActive(true);
-            plataDerDesc.gameObject.SetActive(true);
-            plataDer.gameObject.SetActive(true);
+        if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
+            rightSprite.gameObject.SetActive(true);
+            rightMoneyDesc.gameObject.SetActive(true);
+            rightMoney.gameObject.SetActive(true);
             sticks[0].SetActive(true);
             sticks[1].SetActive(true);
         }
         else {
-            spriteDer.gameObject.SetActive(false);
-            plataDerDesc.gameObject.SetActive(false);
-            plataDer.gameObject.SetActive(false);
+            rightSprite.gameObject.SetActive(false);
+            rightMoneyDesc.gameObject.SetActive(false);
+            rightMoney.gameObject.SetActive(false);
             sticks[0].SetActive(true);
             sticks[1].SetActive(false);
         }
 
-        for (int i = 0; i < botones.Length; i++)
-            if (botones[i] != null)
-                botones[i].SetActive(false);
+        for (int i = 0; i < buttons.Length; i++)
+            if (buttons[i] != null)
+                buttons[i].SetActive(false);
 
 #if UNITY_EDITOR
 #elif UNITY_ANDROID || UNITY_IOS
 
-  if(mg.GetCantJugadores() == ManagerGameplay.CantJugadores.Dos) {
-            botones[0].SetActive(true);
-            botones[3].SetActive(true);
+        if(gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
+            buttons[0].SetActive(true);
+            buttons[3].SetActive(true);
         }
         else {
-            botones[0].SetActive(true);
-            botones[3].SetActive(false);
+            buttons[0].SetActive(true);
+            buttons[3].SetActive(false);
         }
 
 #endif
@@ -86,31 +86,31 @@ public class UIManager : MonoBehaviour {
     }
 
     void PlataCambio(int l, float p) {
-        if (l == (int)Lado.Izq) {
-            plataIzq.text = "$: " + (p / 1000f).ToString("F2");
-            plataIzqDesc.text = "$: " + (p / 1000f).ToString("F2");
+        if (l == (int)Side.Left) {
+            leftMoney.text = "$: " + (p / 1000f).ToString("F2");
+            leftMoneyDesc.text = "$: " + (p / 1000f).ToString("F2");
         }
-        else if (l == (int)Lado.Der) {
-            plataDer.text = "$: " + (p / 1000f).ToString("F2");
-            plataDerDesc.text = "$: " + (p / 1000f).ToString("F2");
+        else if (l == (int)Side.Right) {
+            rightMoney.text = "$: " + (p / 1000f).ToString("F2");
+            rightMoneyDesc.text = "$: " + (p / 1000f).ToString("F2");
         }
     }
 
     void EntradaDescarga(int l) {
         UIGame[l].SetActive(false);
-        UIDescarga[l].SetActive(true);
+        UIUnload[l].SetActive(true);
     }
 
     void SalidaDescarga(int l) {
-        UIDescarga[l].SetActive(false);
+        UIUnload[l].SetActive(false);
         UIGame[l].SetActive(true);
     }
 
     void CambiarSprite(int l, int sprite) {
-        if (l == (int)Lado.Izq)
-            spriteIzq.sprite = spritesCargaIzq[sprite];
-        else if (l == (int)Lado.Der)
-            spriteDer.sprite = spritesCargaDer[sprite];
+        if (l == (int)Side.Left)
+            leftSprite.sprite = leftLoadingSprite[sprite];
+        else if (l == (int)Side.Right)
+            rightSprite.sprite = rightLoadingSprite[sprite];
     }
 
 }

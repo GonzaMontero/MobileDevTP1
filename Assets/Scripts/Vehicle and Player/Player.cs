@@ -15,13 +15,14 @@ public class Player : MonoBehaviour
 	[Header("Scripts Attached")]
 	public DescentController descentController;
 	public CalibrationController calibrationController;
-	public Frenado slowing;
-	public ControlDireccion dirControl;
-	public Visualizacion myVisualization;
+	public SlowingManager slowing;
+	public DirectionControl dirControl;
+	public Visualizer myVisualization;
 	public MeshCollider myCollider;
 	public Respawn myRespawn;
 	public Rigidbody myRigidBody;
 	public Collider[] myColliders;
+	public CarController carController;
 
 	public enum Side { Left, Right }
 
@@ -45,7 +46,7 @@ public class Player : MonoBehaviour
 		for(int i = 0; i< bags.Length;i++)
 			bags[i] = null;
 		
-		myVisualization = GetComponent<Visualizacion>();
+		myVisualization = GetComponent<Visualizer>();
 	}
 	
 	public bool AddBag(Bolsa b)

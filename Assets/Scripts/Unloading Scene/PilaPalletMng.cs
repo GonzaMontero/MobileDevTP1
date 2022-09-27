@@ -30,6 +30,7 @@ public class PilaPalletMng : MonoBehaviour
 	public void Agregar()
 	{
 		CantAct++;
+		if(CantAct > 0)
 		BolasasEnCamion[CantAct-1].GetComponent<Renderer>().enabled = true;
 		
 	}

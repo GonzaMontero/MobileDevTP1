@@ -5,7 +5,7 @@ public class Estanteria : PalletManager
 {	
 	public Cinta CintaReceptora;//cinta que debe recibir la bolsa
 	public Pallet.Values Valor;
-	PilaPalletMng Contenido;
+	public PilaPalletMng Contenido;
 	public bool Anim = false;
 	
 	
@@ -85,6 +85,8 @@ public class Estanteria : PalletManager
 	{
 		pallet.reciever = CintaReceptora.gameObject;
 		pallet.porter = this.gameObject;
+		if(Contenido == null)
+			Contenido = GetComponent<PilaPalletMng>();
 		Contenido.Agregar();
 		pallet.GetComponent<Renderer>().enabled = false;
 		return base.RecievePallet (pallet);
