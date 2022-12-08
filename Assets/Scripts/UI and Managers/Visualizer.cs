@@ -77,15 +77,12 @@ public class Visualizer : MonoBehaviour {
 
     Rect R;
 
-    Renderer techoRend;
-
     void Start() {
         TempoIntTuto = Intervalo;
 
         dirControl = thisPlayer.dirControl;
 
         thisPlayer = GetComponent<Player>();
-        techoRend = Techo.GetComponent<Renderer>();
     }
 
     void OnGUI() {
