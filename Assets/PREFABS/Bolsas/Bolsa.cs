@@ -1,79 +1,52 @@
+using System;
 using UnityEngine;
 using System.Collections;
 
 public class Bolsa : MonoBehaviour
 {
 	public Pallet.Values Monto;
-	//public int IdPlayer = 0;
-	public string TagPlayer = "";
+
+	public string tagToCompare;
+
 	public Texture2D ImagenInventario;
 	Player Pj = null;
 	
-	bool Desapareciendo;
-	public GameObject Particulas;
 	public float TiempParts = 2.5f;
 
-	// Use this for initialization
-	Renderer rend;
-	Collider coll;
-	ParticleSystem particles;
+	public Renderer rend;
+	public Collider coll;
+	public ParticleSystem particles;
+
 	void Start () 
 	{
 		Monto = Pallet.Values.Value2;
-
-		rend = GetComponent<Renderer>();
-		coll = GetComponent<Collider>();
-
-		if (Particulas != null) {
-			particles = Particulas.GetComponent<ParticleSystem>();
-			Particulas.SetActive(false);
-		}
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		
-		if(Desapareciendo)
-		{
-			TiempParts -= Time.deltaTime;
-			if(TiempParts <= 0)
-			{
-				rend.enabled = true;
-				coll.enabled = true;
-
-				particles.Stop();
-				gameObject.SetActive(false);
-			}
-		}
-		
 	}
 	
 	void OnTriggerEnter(Collider coll)
 	{
-		if(coll.tag == TagPlayer)
+		if(coll.tag == tagToCompare)
 		{
 			Pj = coll.GetComponent<Player>();
-			//if(IdPlayer == Pj.IdPlayer)
-			//{
-				if(Pj.AddBag(this))
-					Desaparecer();
-			//}
+
+			if(Pj.AddBag(this))
+				Desaparecer();
 		}
 	}
 	
 	public void Desaparecer()
 	{
 		particles.Play();
-		Desapareciendo = true;
 		
 		rend.enabled = false;
 		coll.enabled = false;
-		
-		if(Particulas != null)
-		{
-			particles.Play();
-		}
-	
+
+		StartCoroutine(WaitForParticleEnd());
 	}
+
+	IEnumerator WaitForParticleEnd()
+    {
+		yield return new WaitForSeconds(particles.main.duration);
+
+		this.gameObject.SetActive(false);
+    }
 }

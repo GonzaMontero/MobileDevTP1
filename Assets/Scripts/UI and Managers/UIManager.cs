@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class UIManager : MonoBehaviour {
+
+    public static UIManager uIManager;
+
     [SerializeField] Sprite[] leftLoadingSprite;
     [SerializeField] Sprite[] rightLoadingSprite;
     [SerializeField] Image leftSprite;
@@ -23,19 +27,21 @@ public class UIManager : MonoBehaviour {
     [SerializeField] GameObject[] sticks;
 
     GameplayDataHolder gameplayDataHolder;
+
     public enum Side {
         Left,
         Right
     }
 
-    private void Start() {
+    private void Start() 
+    {
+        uIManager = this;
         gameplayDataHolder = GameplayDataHolder.Instance;
 
         for (int i = 0; i < UIGame.Length; i++)
             UIGame[i].SetActive(true);
         for (int i = 0; i < UIUnload.Length; i++)
             UIUnload[i].SetActive(false);
-
 
         if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
             rightSprite.gameObject.SetActive(true);
@@ -44,6 +50,7 @@ public class UIManager : MonoBehaviour {
             sticks[0].SetActive(true);
             sticks[1].SetActive(true);
         }
+
         else {
             rightSprite.gameObject.SetActive(false);
             rightMoney.gameObject.SetActive(false);
@@ -56,8 +63,7 @@ public class UIManager : MonoBehaviour {
             if (buttons[i] != null)
                 buttons[i].SetActive(false);
 
-#if UNITY_EDITOR
-#elif UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS
 
         if(gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
             buttons[0].SetActive(true);
@@ -70,19 +76,36 @@ public class UIManager : MonoBehaviour {
 
 #endif
 
-        Player.MoneySwapped += PlataCambio;
-        Player.OnExitedUnload += SalidaDescarga;
-        Player.OnEnteredUnload += EntradaDescarga;
-        Player.OnBagGrabbed += CambiarSprite;
-    }
-    private void OnDestroy() {
-        Player.MoneySwapped -= PlataCambio;
-        Player.OnExitedUnload -= SalidaDescarga;
-        Player.OnEnteredUnload -= EntradaDescarga;
-        Player.OnBagGrabbed -= CambiarSprite;
+        SubscribeToEvents(true);
     }
 
-    void PlataCambio(int l, float p) {
+    private void OnDestroy() 
+    {
+        uIManager = null;
+        SubscribeToEvents(false);
+    }
+
+
+    void SubscribeToEvents(bool subscribe)
+    {
+        if (subscribe)
+        {
+            Player.MoneySwapped += UpdateMoney;
+            Player.OnExitedUnload += SalidaDescarga;
+            Player.OnEnteredUnload += EntradaDescarga;
+            Player.OnBagGrabbed += CambiarSprite;
+        }
+        else
+        {
+            Player.MoneySwapped -= UpdateMoney;
+            Player.OnExitedUnload -= SalidaDescarga;
+            Player.OnEnteredUnload -= EntradaDescarga;
+            Player.OnBagGrabbed -= CambiarSprite;
+        }
+    }
+
+    void UpdateMoney(int l, float p) {
+
         if (l == (int)Side.Left) {
             leftMoney.text = "$: " + (p / 1000f).ToString("F2");
             rightMoney.text = "$: " + (p / 1000f).ToString("F2");
@@ -109,5 +132,4 @@ public class UIManager : MonoBehaviour {
         else if (l == (int)Side.Right)
             rightSprite.sprite = rightLoadingSprite[sprite];
     }
-
 }
