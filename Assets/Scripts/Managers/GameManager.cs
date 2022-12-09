@@ -1,11 +1,15 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public TextMeshProUGUI timeText;
+
     public float gameTime = 60;
+    private float f;
 
     public enum GameState { Calibrating, Playing, Finished }
     public GameState CurrentState = GameState.Playing;
@@ -31,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        f = gameTime;
+
         Instance = this;
         loadingScene = LoadScene.Instance;
         gameplayDataHolder = GameplayDataHolder.Instance;
@@ -76,6 +82,12 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < listToEnable.Length; i++)
             if (listToEnable[i] != null)
                 listToEnable[i].SetActive(enabled);
+    }
+
+    private void Update()
+    {
+        f -= Time.deltaTime;
+        timeText.text = f.ToString("f1");
     }
 
     IEnumerator Play()
@@ -131,6 +143,11 @@ public class GameManager : MonoBehaviour
         Player1.descentController.GameFinished();
         if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer)
             Player2.descentController.GameFinished();
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 
     [System.Serializable]

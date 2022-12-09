@@ -1281,7 +1281,7 @@ MonoBehaviour:
   - {fileID: 1480500096}
   - {fileID: 750108668}
   player1Camera: {fileID: 759979558}
-  scene1: {fileID: 567895929}
+  scene1: {fileID: 1436803503}
 --- !u!4 &564604423
 Transform:
   m_ObjectHideFlags: 0

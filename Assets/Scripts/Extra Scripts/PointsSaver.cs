@@ -27,4 +27,9 @@ public class PointsSaver : MonoBehaviour {
         if (player2 != null)
             player2Points = player2.moneyGained;
     }
+
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }

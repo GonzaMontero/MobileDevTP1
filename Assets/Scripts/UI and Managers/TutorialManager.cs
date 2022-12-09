@@ -51,7 +51,8 @@ public class TutorialManager : MonoBehaviour {
     }
 
     void Update() {
-        if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
+        if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) 
+        {
             if (player1TutorialController.GetFinishedTutorial() && Player2TutorialController.GetFinishedTutorial() && !switchingScene) {
                 switchingScene = true;
                 mainCamera.SetActive(true);
@@ -60,7 +61,8 @@ public class TutorialManager : MonoBehaviour {
                 SceneLoader.StartLoadingScene("Main Gameplay");
             }
         }
-        else {
+        else 
+        {
             if (player1TutorialController.GetFinishedTutorial() && !switchingScene) {
                 switchingScene = true;
                 mainCamera.SetActive(true);
