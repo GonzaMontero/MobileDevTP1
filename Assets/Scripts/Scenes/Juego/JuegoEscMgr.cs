@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class JuegoEscMgr : MonoBehaviour 
@@ -11,12 +12,6 @@ public class JuegoEscMgr : MonoBehaviour
 	public float TiempoEsperaInicio = 120;//tiempo que espera la aplicacion para volver al video introductorio desp de terminada la partida
 	float Tempo2 = 0;
 	
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
 	// Update is called once per frame
 	void Update () 
 	{
@@ -26,7 +21,7 @@ public class JuegoEscMgr : MonoBehaviour
 			if(Tempo > TiempoEsperaFin)
 			{
 				Tempo = 0;
-				Application.LoadLevel(0);
+				SceneManager.LoadScene(0);
 			}
 		}
 		
@@ -36,7 +31,7 @@ public class JuegoEscMgr : MonoBehaviour
 			if(Tempo > TiempoEsperaInicio)
 			{
 				Tempo2 = 0;
-				Application.LoadLevel(0);
+				SceneManager.LoadScene(0);
 			}
 		}		
 		

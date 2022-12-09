@@ -259,7 +259,7 @@ public class Visualizer : MonoBehaviour {
         GUI.Box(R, "");
     }
 
-    public string PrepareNumber(int dinero) {
+    public string PrepareNumber(float dinero) {
         string strDinero = dinero.ToString();
         string res = "";
 

@@ -123,7 +123,7 @@ public class DescentController : MonoBehaviour
 		PEnMov = null;
 		counter--;
 		
-		Player.moneyGained += (int)Bonus;
+		Player.moneyGained += Bonus;
 		Player.SwapMoney();
 
 		if(counter <= 0)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour 
 {
-	public int moneyGained = 0;
+	public float moneyGained = 0;
 	public int playerId = 0;
 	
 	public Bolsa[] bags;
@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
 			bags[activeBagAmount] = b;
 			activeBagAmount++;
 
-			moneyGained += (int)b.Monto;
+			moneyGained += (float)b.Monto;
 			b.Desaparecer();
 
 			if (MoneySwapped != null)

@@ -33,8 +33,9 @@ public class Generate2DReflection : MonoBehaviour
 			
 		reflectingMaterial.SetTexture("_Cube", staticCubemap);
 	}
-	
-	void UpdateReflection()
+
+    [System.Obsolete]
+    void UpdateReflection()
 	{
 		if(!rtex)
 		{

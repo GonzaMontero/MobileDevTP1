@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class Entrega : MonoBehaviour {
 
-    bool moving;
+    readonly bool moving = false;
     int faseEntrega = 1;
-    bool entregando = false;
 
-    enum Teclas {
+    enum Teclas 
+    {
         ASDW,
         FLECHAS
     }
 
     [SerializeField] Teclas t;
-    void Start() {
-
-    }
 
     void Update() {
         switch (t) {
