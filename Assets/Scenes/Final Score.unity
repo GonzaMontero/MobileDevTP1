@@ -242,8 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69feffa684faca48990d7dffb34e4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1Text: {fileID: 1924907336}
-  player2Text: {fileID: 1629169838}
+  player1Text: {fileID: 1629169838}
+  player2Text: {fileID: 1924907336}
   winnerImages:
   - {fileID: 96840624}
   - {fileID: 734383181}
@@ -1162,8 +1162,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1924907335}
   - {fileID: 1629169837}
+  - {fileID: 1924907335}
   - {fileID: 96840625}
   - {fileID: 734383182}
   m_Father: {fileID: 1191299520}
@@ -1408,7 +1408,7 @@ GameObject:
   - component: {fileID: 1629169839}
   - component: {fileID: 1629169838}
   m_Layer: 5
-  m_Name: Player 2 Money
+  m_Name: Player 1 Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1426,7 +1426,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1256783548}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1676,7 +1676,7 @@ GameObject:
   - component: {fileID: 1924907337}
   - component: {fileID: 1924907336}
   m_Layer: 5
-  m_Name: Player 1 Money
+  m_Name: Player 2 Money
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1694,7 +1694,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1256783548}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
