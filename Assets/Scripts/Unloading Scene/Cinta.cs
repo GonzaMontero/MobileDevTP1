@@ -56,7 +56,7 @@ public class Cinta : PalletManager {
 
                     if (Pallets[i].currentTimeOnConveyor >= Pallets[i].timeOnConveyor) {
                         Pallets[i].currentTimeOnConveyor = 0;
-                        ObjAct.gameObject.SetActiveRecursively(false);
+                        ObjAct.gameObject.SetActive(false);
                     }
                 }
             }

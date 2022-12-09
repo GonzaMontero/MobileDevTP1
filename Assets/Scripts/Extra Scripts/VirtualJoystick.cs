@@ -34,6 +34,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             InputManager.Instance.SetAxis("Horizontal1", x);
         else if (lado == Lado.Der)
             InputManager.Instance.SetAxis("Horizontal2", x);
+
         InputManager.Instance.SetAxis("Vertical", y);
     }
 
@@ -62,6 +63,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
             InputManager.Instance.SetAxis("Horizontal1", 0);
         else if (lado == Lado.Der)
             InputManager.Instance.SetAxis("Horizontal2", 0);
+
         InputManager.Instance.SetAxis("Vertical", 0);
     }
 }

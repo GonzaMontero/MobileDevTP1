@@ -13,8 +13,6 @@ public class EndingManager : MonoBehaviour {
         player1Text.text = "$" + pointsSaver.player1Points;
         player2Text.text = "$" + pointsSaver.player2Points;
 
-        Destroy(pointsSaver.gameObject, 0.33f);
-
         if (pointsSaver.player1Points > pointsSaver.player2Points) {
             winnerImages[0].SetActive(true);
             winnerImages[1].SetActive(false);

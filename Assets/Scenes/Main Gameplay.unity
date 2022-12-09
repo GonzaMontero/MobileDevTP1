@@ -41472,7 +41472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e376e7b60a42d74b910ffb09b3fa25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  controller: {fileID: 3128}
   Encendida: 0
   Velocidad: 3.5
   Mano: {fileID: 0}
@@ -41701,7 +41701,7 @@ MonoBehaviour:
     finishCalibration: 0
     finishTutorial1: 0
     finishTutorial2: 0
-    LadoAct: 0
+    LadoAct: 1
     inputType: 0
     player: {fileID: 679474329}
   Player1: {fileID: 2001674745}
@@ -57442,6 +57442,11 @@ PrefabInstance:
       propertyPath: InputAct
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114630957717379974, guid: b81b1a58a0f14c9439cbdd014e695f71,
+        type: 3}
+      propertyPath: currentSide
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114643806136207610, guid: b81b1a58a0f14c9439cbdd014e695f71,
         type: 3}
       propertyPath: slowing
@@ -58029,6 +58034,11 @@ PrefabInstance:
         type: 3}
       propertyPath: InputAct
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114630957717379974, guid: b81b1a58a0f14c9439cbdd014e695f71,
+        type: 3}
+      propertyPath: currentSide
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114643806136207610, guid: b81b1a58a0f14c9439cbdd014e695f71,
         type: 3}

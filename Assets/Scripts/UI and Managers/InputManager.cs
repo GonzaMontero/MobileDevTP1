@@ -30,7 +30,6 @@ public class InputManager
     }
     public bool GetButton(string button)
     {
-
         return Input.GetButton(button);
     }
 }
