@@ -16,9 +16,6 @@ public class UIManager : MonoBehaviour {
     [SerializeField] TextMeshProUGUI leftMoney;
     [SerializeField] TextMeshProUGUI rightMoney;
 
-    [SerializeField] TextMeshProUGUI leftMoneyDesc;
-    [SerializeField] TextMeshProUGUI rightMoneyDesc;
-
     [SerializeField] GameObject gameDerCosas;
     [SerializeField] GameObject descDerCosas;
 
@@ -42,14 +39,14 @@ public class UIManager : MonoBehaviour {
 
         if (gameplayDataHolder.GetPlayerAmount() == GameplayDataHolder.PlayerAmount.MultiPlayer) {
             rightSprite.gameObject.SetActive(true);
-            rightMoneyDesc.gameObject.SetActive(true);
+            rightMoney.gameObject.SetActive(true);
             rightMoney.gameObject.SetActive(true);
             sticks[0].SetActive(true);
             sticks[1].SetActive(true);
         }
         else {
             rightSprite.gameObject.SetActive(false);
-            rightMoneyDesc.gameObject.SetActive(false);
+            rightMoney.gameObject.SetActive(false);
             rightMoney.gameObject.SetActive(false);
             sticks[0].SetActive(true);
             sticks[1].SetActive(false);
@@ -88,11 +85,11 @@ public class UIManager : MonoBehaviour {
     void PlataCambio(int l, float p) {
         if (l == (int)Side.Left) {
             leftMoney.text = "$: " + (p / 1000f).ToString("F2");
-            leftMoneyDesc.text = "$: " + (p / 1000f).ToString("F2");
+            rightMoney.text = "$: " + (p / 1000f).ToString("F2");
         }
         else if (l == (int)Side.Right) {
             rightMoney.text = "$: " + (p / 1000f).ToString("F2");
-            rightMoneyDesc.text = "$: " + (p / 1000f).ToString("F2");
+            rightMoney.text = "$: " + (p / 1000f).ToString("F2");
         }
     }
 
