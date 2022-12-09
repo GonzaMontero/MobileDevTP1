@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
 		if (OnExitedUnload != null)
 			OnExitedUnload((int)currentSide);
 		myVisualization.CambiarAConduccion();
-		currentState = Player.States.Driving;
+		currentState = States.Driving;
 
 		if (OnBagGrabbed != null)
 			OnBagGrabbed((int)currentSide, 0);
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
 		if (OnEnteredUnload != null)
 			OnEnteredUnload((int)currentSide);
 		myVisualization.CambiarADescarga();
-		currentState = Player.States.Dropping;
+		currentState = States.Dropping;
 	}
 	
 	public void RemoveBags()
